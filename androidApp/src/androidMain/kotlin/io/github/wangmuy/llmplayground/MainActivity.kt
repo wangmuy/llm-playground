@@ -1,6 +1,6 @@
 package io.github.wangmuy.llmplayground
 
-import ui.MainView
+import MainView
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity

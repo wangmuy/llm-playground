@@ -56,6 +56,8 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.common)
+                // https://github.com/JetBrains/compose-multiplatform/releases/tag/v1.1.1
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.7.0")
             }
         }
     }
