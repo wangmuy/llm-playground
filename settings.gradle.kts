@@ -1,4 +1,4 @@
-rootProject.name = "MyApplication"
+rootProject.name = "llmPlayground"
 
 include(":androidApp")
 include(":shared")
