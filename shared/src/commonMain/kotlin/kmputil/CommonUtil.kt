@@ -1,3 +1,5 @@
+package kmputil
+
 expect fun getPlatformName(): String
 
 expect fun timestampMs(): Long

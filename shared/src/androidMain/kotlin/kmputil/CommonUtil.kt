@@ -1,7 +1,9 @@
+package kmputil
+
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 
-actual fun getPlatformName(): String = "Desktop"
+actual fun getPlatformName(): String = "Android"
 
 actual fun timestampMs(): Long = System.currentTimeMillis()
 

@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timestampMs
 
 class ChatScreenViewModel(
     private val chatDataSource: ChatDataSource
@@ -36,7 +35,7 @@ class ChatScreenViewModel(
             screenUiState.update { it.copy(inputText = "") } // TODO isSending=true
 
             chatDataSource.addMessage(1,
-                ChatMessage(role = "me", content = currentInput, timeMs = timestampMs()))
+                ChatMessage(role = "me", content = currentInput, timeMs = kmputil.timestampMs()))
             // TODO send message
             // TODO stop loading
         }

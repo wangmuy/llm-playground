@@ -1,6 +1,5 @@
 package data.source.local
 
-import atomicInt
 import data.model.ChatMessage
 import data.source.ChatDataSource
 import kotlinx.coroutines.flow.Flow
@@ -31,7 +30,7 @@ class ChatInMemoryDataSource: ChatDataSource {
     override suspend fun addMessage(sessionId: Int, message: ChatMessage) {
         _messagesMSF.update {oldMessages->
             val newMessages = ArrayList(oldMessages)
-            newMessages.add(ChatMessage(id = atomicInt(TAG),
+            newMessages.add(ChatMessage(id = kmputil.atomicInt(TAG),
                 role = message.role, content = message.content, timeMs = message.timeMs))
             newMessages
         }
