@@ -4,7 +4,7 @@ open class ChatMessage(
     val id: Int = 0,
     val role: String,
     val content: String,
-    val timeMs: Long
+    val timeMs: Long = kmputil.timestampMs()
 ) {
     companion object {
         const val ROLE_ME = "me"

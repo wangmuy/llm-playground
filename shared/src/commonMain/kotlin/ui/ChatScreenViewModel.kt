@@ -7,10 +7,12 @@ import kmputil.KMPViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ui.util.Async
 
 class ChatScreenViewModel(
     private val chatDataSource: ChatDataSource,
@@ -19,12 +21,13 @@ class ChatScreenViewModel(
 
     val screenUiState: MutableStateFlow<ChatScreenUiState> = MutableStateFlow(ChatScreenUiState())
 
-    val currentChatUiState: StateFlow<ChatMessagesUiState> = chatDataSource
-        .getMessageStream(1).map { ChatMessagesUiState.Success(it) }
+    val currentChatUiState: StateFlow<Async<List<ChatMessage>>> = chatDataSource
+        .getMessageStream(1).map { Async.Success(it) }
+        .catch<Async<List<ChatMessage>>> { emit(Async.Error("error loading chat histories")) }
         .stateIn(
         scope = coroutineScope,
         started = SharingStarted.Eagerly,
-        initialValue = ChatMessagesUiState.Loading
+        initialValue = Async.Loading
     )
 
     fun onTextChange(inputText: String) {
@@ -40,8 +43,7 @@ class ChatScreenViewModel(
 
             val msg = ChatMessage(
                 role = ChatMessage.ROLE_ME,
-                content = currentInput,
-                timeMs = kmputil.timestampMs())
+                content = currentInput)
             chatDataSource.addMessage(1, msg)
 
             val sendResult = chatService.sendMessage(msg)
@@ -51,20 +53,11 @@ class ChatScreenViewModel(
             val replyMsg = sendResult.getOrElse {e->
                 ChatMessage(
                     role = ChatMessage.ROLE_APP,
-                    content = e.stackTraceToString(),
-                    timeMs = kmputil.timestampMs())
+                    content = e.stackTraceToString())
             }
             chatDataSource.addMessage(1, replyMsg)
         }
     }
-}
-
-sealed interface ChatMessagesUiState {
-    object Empty: ChatMessagesUiState
-    object Loading: ChatMessagesUiState
-    data class Success(
-        val messages: List<ChatMessage> = emptyList()
-    ): ChatMessagesUiState
 }
 
 data class ChatScreenUiState(

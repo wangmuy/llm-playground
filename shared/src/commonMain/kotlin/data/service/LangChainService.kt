@@ -22,7 +22,7 @@ class LangChainService(
         config.proxy = proxy ?: ""
     }
 
-    override fun setLLMConfig(configs: Map<String, String>) {
+    override fun setLLMConfig(configs: Map<String, Any>) {
         config.llmConfig.clear()
         // todo
         config.llmConfig.putAll(configs)
@@ -51,7 +51,6 @@ class LangChainService(
         val reply = getChatService().invoke(message.content, emptyList())
         ChatMessage(
             role = ChatMessage.ROLE_BOT,
-            content = reply,
-            timeMs = kmputil.timestampMs())
+            content = reply)
     }
 }
