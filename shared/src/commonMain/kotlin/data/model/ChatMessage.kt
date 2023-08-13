@@ -8,6 +8,9 @@ open class ChatMessage(
 ) {
     companion object {
         const val ROLE_ME = "me"
+        const val ROLE_SYSTEM = "system"
+        const val ROLE_BOT = "bot"
+        const val ROLE_APP = "app"
     }
 
     override fun equals(other: Any?): Boolean {

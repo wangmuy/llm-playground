@@ -1,0 +1,12 @@
+[versions]
+llmchainkmp = "0.0.1-SNAPSHOT"
+
+[libraries]
+androidx-activity-compose = "androidx.activity:activity-compose:1.6.1"
+androidx-appcompat = "androidx.appcompat:appcompat:1.6.1"
+androidx-core-ktx = "androidx.core:core-ktx:1.9.0"
+kotlinx-coroutines-swing = "org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.7.0"
+llmchain-kmp-core = { module = "io.github.wangmuy.llmchain.kmp:core", version.ref = "llmchainkmp" }
+llmchain-kmp-serviceprovider-openai = { module = "io.github.wangmuy.llmchain.kmp:serviceprovider-openai", version.ref = "llmchainkmp" }
+
+[plugins]
