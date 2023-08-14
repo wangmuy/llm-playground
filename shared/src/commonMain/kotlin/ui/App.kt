@@ -36,6 +36,7 @@ fun App() {
         Scaffold(
             topBar = {
                 PlaygroundTopBar(
+                    navigationState.currentScreenId,
                     onClickChat = {
                         navigationViewModel.onSelectScreen(NavigationViewModel.SCREEN_CHAT)
                     },
