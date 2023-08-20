@@ -7,7 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Edit
-import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
@@ -29,7 +29,7 @@ fun PlaygroundTopBar(
             }
             IconButton(onClick = onClickSetting) {
                 Icon(
-                    Icons.Rounded.Info,
+                    Icons.Rounded.Settings,
                     contentDescription = "settings",
                     tint = getScreenButtonTint(NavigationViewModel.SCREEN_SETTING, currentScreenId)
                 )

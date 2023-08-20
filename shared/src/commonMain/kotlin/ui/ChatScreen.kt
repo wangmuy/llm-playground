@@ -39,7 +39,11 @@ fun ChatScreen(
         }
         EditBar(
             inputText = screenUiState.inputText,
+            templateText = screenUiState.templateText,
+            showTemplate = screenUiState.showTemplate,
             onTextChange = viewModel::onTextChange,
+            onTemplateChange = viewModel::onTemplateChange,
+            onShowTemplateChange = viewModel::onShowTemplateChange,
             onSend = viewModel::onSendMessage)
     }
 }

@@ -1,5 +1,6 @@
 package ui
 
+import com.wangmuy.llmchain.prompt.PromptTemplate
 import data.model.ChatMessage
 import data.service.ChatService
 import data.source.ChatDataSource
@@ -18,6 +19,32 @@ class ChatScreenViewModel(
     private val chatDataSource: ChatDataSource,
     private val chatService: ChatService
 ): KMPViewModel() {
+    companion object {
+        fun applyTemplate(templateText: String, inputText: String): String {
+            var tempKey: String? = null
+            var tempValue: String? = null
+            val args = HashMap<String, String>()
+            inputText.splitToSequence("\n").forEach {line->
+                if (line.startsWith("[") && line.endsWith("]")) {
+                    if (tempKey != null) {
+                        args[tempKey!!] = tempValue ?: ""
+                    }
+                    tempKey = line.substring(1, line.length-1)
+                    tempValue = null
+                } else {
+                    tempValue = (if (tempValue == null) "" else "$tempValue\n") + line
+                }
+            }
+            if (tempKey != null) {
+                args[tempKey!!] = tempValue ?: ""
+            }
+            if (args.size == 0) {
+                args["input"] = inputText
+            }
+            val promptTemplate = PromptTemplate(args.keys.toList(), templateText)
+            return promptTemplate.format(args)
+        }
+    }
 
     val screenUiState: MutableStateFlow<ChatScreenUiState> = MutableStateFlow(ChatScreenUiState())
 
@@ -32,18 +59,38 @@ class ChatScreenViewModel(
 
     fun onTextChange(inputText: String) {
         screenUiState.update {
-            it.copy(inputText = inputText, isSending = true)
+            it.copy(inputText = inputText)
+        }
+    }
+
+    fun onTemplateChange(templateText: String) {
+        screenUiState.update {
+            it.copy(templateText = templateText)
+        }
+    }
+
+    fun onShowTemplateChange() {
+        screenUiState.update {
+            val oldValue = it.showTemplate
+            it.copy(showTemplate = !oldValue)
         }
     }
 
     fun onSendMessage() {
         coroutineScope.launch {
-            val currentInput = screenUiState.value.inputText
-            screenUiState.update { it.copy(inputText = "") }
+            val template = screenUiState.value.templateText.trim()
+            val input = screenUiState.value.inputText
+            screenUiState.update { it.copy(inputText = "", isSending = true) }
+
+            val showTemplate = screenUiState.value.showTemplate
+            val sendText = if (template.isNotEmpty() && showTemplate)
+                applyTemplate(template, input)
+            else
+                input
 
             val msg = ChatMessage(
                 role = ChatMessage.ROLE_ME,
-                content = currentInput)
+                content = sendText)
             chatDataSource.addMessage(1, msg)
 
             val sendResult = chatService.sendMessage(msg)
@@ -62,5 +109,7 @@ class ChatScreenViewModel(
 
 data class ChatScreenUiState(
     val inputText: String = "",
+    val templateText: String = "",
+    val showTemplate: Boolean = true,
     val isSending: Boolean = false
 )

@@ -8,7 +8,11 @@ plugins {
 kotlin {
     android()
 
-    jvm("desktop")
+    jvm("desktop") {
+        testRuns["test"].executionTask.configure {
+            useJUnitPlatform()
+        }
+    }
 
 //    iosX64()
 //    iosArm64()
@@ -38,6 +42,11 @@ kotlin {
                 implementation(libs.llmchain.kmp.core)
                 implementation(libs.llmchain.kmp.serviceprovider.openai)
                 implementation(libs.russhwolf.multiplatform.settings.noarg)
+            }
+        }
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
             }
         }
         val androidMain by getting {
