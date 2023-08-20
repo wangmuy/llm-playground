@@ -4,6 +4,7 @@ import com.wangmuy.llmchain.llm.BaseLLM
 import data.model.ChatConfig
 import data.service.ChatService
 import data.setting.SettingDataSource
+import data.setting.SettingRepository
 import kmputil.KMPViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -40,8 +41,7 @@ class SettingScreenViewModel(
                 baseUrl = config.baseUrl,
                 timeoutMillisStr = config.timeoutMillis.toString(),
                 proxy = config.proxy,
-                llmConfigStr = config.llmConfig.map {entry->
-                    "${entry.key}=${entry.value}" }.joinToString("\n")
+                llmConfigStr = SettingRepository.llmConfigToString(config.llmConfig)
             )
         }
         val proxy = config.proxy.ifEmpty { null }

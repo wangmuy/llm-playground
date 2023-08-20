@@ -37,6 +37,7 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(libs.llmchain.kmp.core)
                 implementation(libs.llmchain.kmp.serviceprovider.openai)
+                implementation(libs.russhwolf.multiplatform.settings.noarg)
             }
         }
         val androidMain by getting {

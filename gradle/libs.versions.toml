@@ -8,5 +8,6 @@ androidx-core-ktx = "androidx.core:core-ktx:1.9.0"
 kotlinx-coroutines-swing = "org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.7.0"
 llmchain-kmp-core = { module = "io.github.wangmuy.llmchain.kmp:core", version.ref = "llmchainkmp" }
 llmchain-kmp-serviceprovider-openai = { module = "io.github.wangmuy.llmchain.kmp:serviceprovider-openai", version.ref = "llmchainkmp" }
+russhwolf-multiplatform-settings-noarg = "com.russhwolf:multiplatform-settings-no-arg:1.0.0"
 
 [plugins]
